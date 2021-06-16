@@ -1,0 +1,5 @@
+name: PlayerKiller
+author: Rader
+version: 0.1
+main: fr.rader.playerkiller.Main
+api-version: 1.16
