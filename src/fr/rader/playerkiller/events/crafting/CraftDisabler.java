@@ -10,7 +10,7 @@ public class CraftDisabler {
     private final List<Material> disabledCrafts;
 
     public CraftDisabler() {
-        disabledCrafts = new ArrayList<>();
+        this.disabledCrafts = new ArrayList<>();
     }
 
     public void disableCraft(Material material) {

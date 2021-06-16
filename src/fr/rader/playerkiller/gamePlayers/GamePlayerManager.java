@@ -10,11 +10,11 @@ public class GamePlayerManager {
     private final List<GamePlayer> gamePlayers;
 
     public GamePlayerManager() {
-        gamePlayers = new ArrayList<>();
+        this.gamePlayers = new ArrayList<>();
     }
 
     public void add(GamePlayer gamePlayer) {
-        this.gamePlayers.add(gamePlayer);
+        gamePlayers.add(gamePlayer);
     }
 
     public GamePlayer getGamePlayer(Player player) {
@@ -32,7 +32,7 @@ public class GamePlayerManager {
      * @param team Team of the players
      * @return A list containing all players in the team
      */
-    public GamePlayer[] getGamePlayersInTeam(String team) {
+    public List<GamePlayer> getGamePlayersInTeam(String team) {
         List<GamePlayer> out = new ArrayList<>();
 
         for(GamePlayer gamePlayer : gamePlayers) {
@@ -41,6 +41,6 @@ public class GamePlayerManager {
             }
         }
 
-        return out.toArray(new GamePlayer[0]);
+        return out;
     }
 }

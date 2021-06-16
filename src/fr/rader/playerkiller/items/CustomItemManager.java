@@ -7,11 +7,11 @@ public class CustomItemManager {
     private final HashMap<CustomItemType, CustomItem> customItems;
 
     public CustomItemManager() {
-        customItems = new HashMap<>();
+        this.customItems = new HashMap<>();
     }
 
     public void add(CustomItemType type, CustomItem item) {
-        this.customItems.put(type, item);
+        customItems.put(type, item);
     }
 
     public CustomItem get(CustomItemType type) {

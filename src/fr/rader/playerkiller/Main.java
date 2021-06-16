@@ -1,5 +1,6 @@
 package fr.rader.playerkiller;
 
+import fr.rader.playerkiller.entities.guardian.GuardianManager;
 import fr.rader.playerkiller.entities.guardian.events.GuardianSpawnEvent;
 import fr.rader.playerkiller.events.crafting.CraftDisabler;
 import fr.rader.playerkiller.events.crafting.CraftEvent;
@@ -22,6 +23,7 @@ public class Main extends JavaPlugin {
 
     private final GamePlayerManager gamePlayerManager = new GamePlayerManager();
     private final CustomItemManager customItemManager = new CustomItemManager();
+    private final GuardianManager guardianManager = new GuardianManager();
     private final CraftDisabler craftDisabler = new CraftDisabler();
 
     @Override
@@ -43,6 +45,10 @@ public class Main extends JavaPlugin {
         //gamePlayerManager.find("red")[0].getPlayer().setItemOnCursor(customItemManager.get(CustomItemType.PK_SWORD).getItemStack());
 
         registerEvents();
+
+        getServer().getLogger().info("[PlayerKiller] PlayerKiller v" + getDescription().getVersion() + " enabled!");
+
+        getServer().getScheduler().scheduleSyncRepeatingTask(this, Tick::tick, 0L, 1L);
     }
 
     private void disableCrafts() {
@@ -98,6 +104,10 @@ public class Main extends JavaPlugin {
 
     public GamePlayerManager getGamePlayerManager() {
         return gamePlayerManager;
+    }
+
+    public GuardianManager getGuardianManager() {
+        return guardianManager;
     }
 
     public CustomItemManager getCustomItemManager() {
