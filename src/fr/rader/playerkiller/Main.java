@@ -1,9 +1,13 @@
 package fr.rader.playerkiller;
 
+import fr.rader.playerkiller.commands.SetTeamCommand;
 import fr.rader.playerkiller.entities.guardian.GuardianManager;
+import fr.rader.playerkiller.entities.guardian.events.GuardianDeathEvent;
 import fr.rader.playerkiller.entities.guardian.events.GuardianSpawnEvent;
+import fr.rader.playerkiller.entities.guardian.events.GuardianTargetEvent;
 import fr.rader.playerkiller.events.crafting.CraftDisabler;
 import fr.rader.playerkiller.events.crafting.CraftEvent;
+import fr.rader.playerkiller.events.player.PlayerAttackEvent;
 import fr.rader.playerkiller.gamePlayers.GamePlayer;
 import fr.rader.playerkiller.gamePlayers.GamePlayerManager;
 import fr.rader.playerkiller.items.CustomItem;
@@ -44,6 +48,7 @@ public class Main extends JavaPlugin {
 
         //gamePlayerManager.find("red")[0].getPlayer().setItemOnCursor(customItemManager.get(CustomItemType.PK_SWORD).getItemStack());
 
+        registerCommands();
         registerEvents();
 
         getServer().getLogger().info("[PlayerKiller] PlayerKiller v" + getDescription().getVersion() + " enabled!");
@@ -85,13 +90,21 @@ public class Main extends JavaPlugin {
         customItemManager.add(CustomItemType.PK_BOOTS, new CustomItem(Material.DIAMOND_BOOTS, "§6§lPlayer Killer Boots", "§fBy having this item equipped,", "§fyou can avoid loosing half a heart"));
     }
 
+    private void registerCommands() {
+        this.getCommand("setteam").setExecutor(new SetTeamCommand());
+    }
+
     private void registerEvents() {
+        // Crafting Events
         pluginManager.registerEvents(new CraftEvent(), this);
 
         // Entity Events
         pluginManager.registerEvents(new GuardianSpawnEvent(), this);
+        pluginManager.registerEvents(new GuardianTargetEvent(), this);
+        pluginManager.registerEvents(new GuardianDeathEvent(), this);
 
         // Player Events
+        pluginManager.registerEvents(new PlayerAttackEvent(), this);
     }
 
     public static Main getInstance() {

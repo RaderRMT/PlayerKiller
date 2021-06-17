@@ -27,7 +27,6 @@ public class GuardianSpawnEvent implements Listener {
 
                     if(main.getGuardianManager().guardiansInTeam(playerTeam) < 3) {
                         removeGolem(pumpkinLocation);
-                        e.setCancelled(true);
                         e.getPlayer().getInventory().removeItem(new ItemStack(Material.CARVED_PUMPKIN, 1));
 
                         main.getGuardianManager().add(
@@ -35,6 +34,7 @@ public class GuardianSpawnEvent implements Listener {
                                         spawnIronGolem(pumpkinLocation))
                         );
                     } else {
+                        e.setCancelled(true);
                         gamePlayer.getPlayer().sendMessage("You spawned too many golems!");
                     }
                 }
@@ -52,6 +52,7 @@ public class GuardianSpawnEvent implements Listener {
     }
 
     private void removeGolem(Location loc) {
+        removeBlock(loc, 0, 0, 0);
         removeBlock(loc, 0, -1, 0);
         removeBlock(loc, 0, -2, 0);
 

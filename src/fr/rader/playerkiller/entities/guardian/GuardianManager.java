@@ -1,5 +1,8 @@
 package fr.rader.playerkiller.entities.guardian;
 
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,18 +35,38 @@ public class GuardianManager {
     }
 
     public void tickGuardians() {
-        List<Guardian> deadGuardians = new ArrayList<>();
-
         for(Guardian guardian : guardians) {
-            if(guardian.getGolem().isDead()) {
-                deadGuardians.add(guardian);
-            } else {
-                guardian.tick();
+            // check for each guardians if an enemy is 20 blocks away
+            // only if they do not have a target
+            if(guardian.getGolem().getTarget() == null) {
+                for(Entity entity : guardian.getGolem().getNearbyEntities(20, 20, 20)) {
+                    if(entity instanceof Player) {
+                        Player player = (Player) entity;
+
+                        if(!guardian.isPlayerInSameTeam(player)) {
+                            guardian.getGolem().setTarget(player);
+                            return;
+                        }
+                    }
+                }
+            }
+
+            // todo: check for each guardians if they left the "town hall" limit
+            //  if they do, we remove the target.
+        }
+    }
+
+    public Guardian getGuardian(Entity entity) {
+        for(Guardian guardian : guardians) {
+            if(guardian.getGolem().equals(entity)) {
+                return guardian;
             }
         }
 
-        for(Guardian guardian : deadGuardians) {
-            guardians.remove(guardian);
-        }
+        return null;
+    }
+
+    public void removeGuardian(Guardian guardian) {
+        guardians.remove(guardian);
     }
 }

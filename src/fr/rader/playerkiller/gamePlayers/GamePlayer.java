@@ -7,13 +7,11 @@ public class GamePlayer {
 
     private String team;
     private Player player;
-    private boolean isDead;
     private byte health;
 
     public GamePlayer(Player player, String team) {
         this.player = player;
         this.team = team;
-        this.isDead = false;
         this.health = 20;
     }
 
@@ -31,12 +29,16 @@ public class GamePlayer {
         return team;
     }
 
+    public void setTeam(String team) {
+        this.team = team;
+    }
+
     public Player getPlayer() {
         return player;
     }
 
     public boolean isDead() {
-        return isDead;
+        return player.isDead();
     }
 
     public byte getHealth() {

@@ -1,9 +1,7 @@
 package fr.rader.playerkiller.entities.guardian;
 
 import fr.rader.playerkiller.Main;
-import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.Player;
 
@@ -21,37 +19,7 @@ public class Guardian {
         golem.setCustomNameVisible(true);
     }
 
-    public void tick() {
-        if(this.target == null) {
-            for(Entity entity : this.golem.getNearbyEntities(20, 20, 20)) {
-                if(entity instanceof Player) {
-                    Player player = ((Player) entity).getPlayer();
-
-                    if(this.isPlayerInSameTeam(player)) {
-                        this.target = null;
-                        this.golem.setTarget(null);
-                    } else {
-                        if(!player.isDead()) {
-                            this.golem.damage(0, player);
-                            this.golem.setTarget(player);
-                            this.target = player;
-
-                            return;
-                        }
-                    }
-                }
-            }
-        } else {
-            this.golem.setTarget(this.target);
-
-            if(this.target.isDead()) {
-                this.target = null;
-                this.golem.setTarget(null);
-            }
-        }
-    }
-
-    private boolean isPlayerInSameTeam(Player player) {
+    public boolean isPlayerInSameTeam(Player player) {
         return player.getGameMode().equals(GameMode.SURVIVAL) &&
                 Main.getInstance().getGamePlayerManager().getGamePlayer(player).getTeam().equals(this.team);
     }

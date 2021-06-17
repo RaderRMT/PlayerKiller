@@ -6,12 +6,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 
-public class AttackEvent implements Listener {
+public class PlayerAttackEvent implements Listener {
 
     @EventHandler
     public void onAttackEvent(EntityDamageByEntityEvent e) {
         if(e.getDamager() instanceof Player) {
-            Player damager = ((Player) e.getDamager()).getPlayer();
+            Player damager = (Player) e.getDamager();
             ItemStack damagerItem = damager.getInventory().getItemInMainHand();
 
             if(e.getEntity() instanceof Player) {
