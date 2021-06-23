@@ -20,8 +20,11 @@ public class Guardian {
     }
 
     public boolean isPlayerInSameTeam(Player player) {
-        return player.getGameMode().equals(GameMode.SURVIVAL) &&
-                Main.getInstance().getGamePlayerManager().getGamePlayer(player).getTeam().equals(this.team);
+        if(player.getGameMode().equals(GameMode.SURVIVAL)) {
+            return true;
+        }
+
+        return Main.getInstance().getGamePlayerManager().getGamePlayer(player).getTeam().equals(this.team);
     }
 
     public IronGolem getGolem() {
