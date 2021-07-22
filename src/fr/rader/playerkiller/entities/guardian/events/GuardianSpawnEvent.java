@@ -30,8 +30,10 @@ public class GuardianSpawnEvent implements Listener {
                         e.getPlayer().getInventory().removeItem(new ItemStack(Material.CARVED_PUMPKIN, 1));
 
                         main.getGuardianManager().add(
-                                new Guardian(playerTeam,
-                                        spawnIronGolem(pumpkinLocation))
+                                new Guardian(
+                                        playerTeam,
+                                        spawnIronGolem(pumpkinLocation)
+                                )
                         );
                     } else {
                         e.setCancelled(true);

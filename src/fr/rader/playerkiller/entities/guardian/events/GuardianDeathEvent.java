@@ -18,6 +18,7 @@ public class GuardianDeathEvent implements Listener {
 
             if(guardian != null) {
                 manager.removeGuardian(guardian);
+                e.getDrops().clear();
             }
         }
     }
