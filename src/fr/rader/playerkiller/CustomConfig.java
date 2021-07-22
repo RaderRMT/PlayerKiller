@@ -1,6 +1,7 @@
 package fr.rader.playerkiller;
 
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -15,29 +16,35 @@ public class CustomConfig {
     private final String defaultConfig;
 
     private FileConfiguration config = null;
-    private File configFile = null;
+    private final File configFile;
 
     public CustomConfig(JavaPlugin plugin, String defaultConfig) {
         this.plugin = plugin;
         this.defaultConfig = defaultConfig;
+
+        this.configFile = new File(plugin.getDataFolder(), defaultConfig);
     }
 
     public void reloadConfig() {
-        if(configFile == null) {
-            configFile = new File(plugin.getDataFolder(), defaultConfig);
-        }
-
         config = YamlConfiguration.loadConfiguration(configFile);
 
-        // look for defaults in the jar
-        InputStream resource = plugin.getResource(defaultConfig);
-        if(resource != null) {
-            Reader reader = new InputStreamReader(resource, StandardCharsets.UTF_8);
-
-            YamlConfiguration defaultConfig = YamlConfiguration.loadConfiguration(reader);
-            config.setDefaults(defaultConfig);
-        } else {
-            Bukkit.getLogger().log(Level.SEVERE, "Resource '" + defaultConfig + "' not found!");
+        try {
+            if(configFile.exists()) {
+                // load the config if it already exists
+                // in the plugin's config folder
+                config.load(configFile);
+            } else {
+                // load the config from the jar file if the config
+                // does not exist in the plugin's config folder
+                InputStream resource = plugin.getResource(defaultConfig);
+                if(resource != null) {
+                    config.load(new InputStreamReader(resource, StandardCharsets.UTF_8));
+                } else {
+                    Bukkit.getLogger().log(Level.SEVERE, "Resource '" + defaultConfig + "' not found!");
+                }
+            }
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
         }
     }
 

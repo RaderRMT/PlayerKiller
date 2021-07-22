@@ -55,7 +55,7 @@ public class Main extends JavaPlugin {
         disableCrafts();
         createCustomItems();
 
-        //gamePlayerManager.getGamePlayersInTeam("red").get(0).getPlayer().getInventory().setItem(0, customItemManager.get(CustomItemType.PK_SWORD).getItemStack());
+        gamePlayerManager.getGamePlayersInTeam("red").get(0).getPlayer().getInventory().setItem(0, customItemManager.get(CustomItemType.PK_SWORD).getItemStack());
 
         registerCommands();
         registerEvents();
@@ -68,6 +68,7 @@ public class Main extends JavaPlugin {
     private void prepareConfigs() {
         customItemConfig = new CustomConfig(this, "custom_items.yml");
         customItemConfig.reloadConfig();
+        customItemConfig.saveConfig();
     }
 
     private void disableCrafts() {
