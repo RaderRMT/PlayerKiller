@@ -8,19 +8,18 @@ import org.bukkit.entity.Player;
 public class Guardian {
 
     private String team;
-    private Player target;
     private IronGolem golem;
 
     public Guardian(String team, IronGolem golem) {
         this.team = team;
         this.golem = golem;
 
-        golem.setCustomName("testing");
+        golem.setCustomName("Team: " + team);
         golem.setCustomNameVisible(true);
     }
 
     public boolean isPlayerInSameTeam(Player player) {
-        if(player.getGameMode().equals(GameMode.SURVIVAL)) {
+        if(!player.getGameMode().equals(GameMode.SURVIVAL)) {
             return true;
         }
 
