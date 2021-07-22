@@ -5,23 +5,25 @@ import org.bukkit.entity.Player;
 
 public class GamePlayer {
 
+    private final Player player;
+
+    private byte maxHealth;
     private String team;
-    private Player player;
-    private byte health;
 
     public GamePlayer(Player player, String team) {
         this.player = player;
         this.team = team;
-        this.health = 20;
+        this.maxHealth = 20;
     }
 
-    public void damage(int damagePoints, Player damager) {
-        this.health -= damagePoints;
+    // reduce player's max health by 1
+    public void reduceMaxHealth() {
+        this.maxHealth--;
 
-        if(this.health > 0) {
-            player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(health);
+        if(this.maxHealth > 0) {
+            player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(maxHealth);
         } else {
-            player.damage(1, damager);
+            player.setHealth(0);
         }
     }
 
@@ -41,7 +43,7 @@ public class GamePlayer {
         return player.isDead();
     }
 
-    public byte getHealth() {
-        return health;
+    public byte getMaxHealth() {
+        return maxHealth;
     }
 }

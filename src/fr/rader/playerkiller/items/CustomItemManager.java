@@ -4,22 +4,23 @@ import java.util.HashMap;
 
 public class CustomItemManager {
 
-    private final HashMap<CustomItemType, CustomItem> customItems;
+    private final HashMap<String, CustomItem> customItems;
 
     public CustomItemManager() {
         this.customItems = new HashMap<>();
     }
 
-    public void add(CustomItemType type, CustomItem item) {
+    public void add(CustomItem item) {
+        String type = item.getType();
+
+        if(this.customItems.containsKey(type)) {
+            throw new IllegalArgumentException("type " + type + " is already used by an item");
+        }
+
         customItems.put(type, item);
     }
 
-    public CustomItem get(CustomItemType type) {
+    public CustomItem get(String type) {
         return customItems.get(type);
-    }
-
-    // todo: make the match
-    public boolean match(CustomItem item1, CustomItem item2) {
-        return false;
     }
 }

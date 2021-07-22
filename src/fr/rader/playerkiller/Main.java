@@ -1,5 +1,7 @@
 package fr.rader.playerkiller;
 
+import com.google.gson.Gson;
+import fr.rader.playerkiller.commands.DamageCommand;
 import fr.rader.playerkiller.commands.SetTeamCommand;
 import fr.rader.playerkiller.entities.guardian.GuardianManager;
 import fr.rader.playerkiller.entities.guardian.events.GuardianDeathEvent;
@@ -15,6 +17,7 @@ import fr.rader.playerkiller.items.CustomItemManager;
 import fr.rader.playerkiller.items.CustomItemType;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -25,10 +28,14 @@ public class Main extends JavaPlugin {
 
     private final PluginManager pluginManager = Bukkit.getPluginManager();
 
+    // Managers:
     private final GamePlayerManager gamePlayerManager = new GamePlayerManager();
     private final CustomItemManager customItemManager = new CustomItemManager();
     private final GuardianManager guardianManager = new GuardianManager();
     private final CraftDisabler craftDisabler = new CraftDisabler();
+
+    // Configs:
+    private CustomConfig customItemConfig;
 
     @Override
     public void onEnable() {
@@ -40,13 +47,15 @@ public class Main extends JavaPlugin {
         //////////////////////////////////////////////////////////////////////////////////
         for(Player player : Bukkit.getOnlinePlayers()) {
             gamePlayerManager.add(new GamePlayer(player, "red"));
+            player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(20);
         }
         //////////////////////////////////////////////////////////////////////////////////
 
+        prepareConfigs();
         disableCrafts();
         createCustomItems();
 
-        //gamePlayerManager.find("red")[0].getPlayer().setItemOnCursor(customItemManager.get(CustomItemType.PK_SWORD).getItemStack());
+        //gamePlayerManager.getGamePlayersInTeam("red").get(0).getPlayer().getInventory().setItem(0, customItemManager.get(CustomItemType.PK_SWORD).getItemStack());
 
         registerCommands();
         registerEvents();
@@ -54,6 +63,11 @@ public class Main extends JavaPlugin {
         getServer().getLogger().info("[PlayerKiller] PlayerKiller v" + getDescription().getVersion() + " enabled!");
 
         getServer().getScheduler().scheduleSyncRepeatingTask(this, Tick::tick, 0L, 1L);
+    }
+
+    private void prepareConfigs() {
+        customItemConfig = new CustomConfig(this, "custom_items.yml");
+        customItemConfig.reloadConfig();
     }
 
     private void disableCrafts() {
@@ -80,18 +94,17 @@ public class Main extends JavaPlugin {
     }
 
     private void createCustomItems() {
-        // todo:
-        //  find a better way to add custom items because this is a mess
-        customItemManager.add(CustomItemType.PK_SWORD, new CustomItem(Material.DIAMOND_SWORD, "§6§lPlayer Killer", "§fBy using this item on a player,", "§fyou can lock them half a heart"));
-        customItemManager.add(CustomItemType.PK_SHIELD, new CustomItem(Material.SHIELD, "§6§lPlayer Killer Shield", "§fBy having this item equipped,", "§fyou can avoid loosing half a heart"));
-        customItemManager.add(CustomItemType.PK_HELMET, new CustomItem(Material.DIAMOND_HELMET, "§6§lPlayer Killer Helmet", "§fBy having this item equipped,", "§fyou can avoid loosing half a heart"));
-        customItemManager.add(CustomItemType.PK_CHESTPLATE, new CustomItem(Material.DIAMOND_CHESTPLATE, "§6§lPlayer Killer Chestplate", "§fBy having this item equipped,", "§fyou can avoid loosing half a heart"));
-        customItemManager.add(CustomItemType.PK_LEGGINGS, new CustomItem(Material.DIAMOND_LEGGINGS, "§6§lPlayer Killer Leggings", "§fBy having this item equipped,", "§fyou can avoid loosing half a heart"));
-        customItemManager.add(CustomItemType.PK_BOOTS, new CustomItem(Material.DIAMOND_BOOTS, "§6§lPlayer Killer Boots", "§fBy having this item equipped,", "§fyou can avoid loosing half a heart"));
+        customItemManager.add(new CustomItem(CustomItemType.PK_SWORD));
+        customItemManager.add(new CustomItem(CustomItemType.PK_SHIELD));
+        customItemManager.add(new CustomItem(CustomItemType.PK_HELMET));
+        customItemManager.add(new CustomItem(CustomItemType.PK_CHESTPLATE));
+        customItemManager.add(new CustomItem(CustomItemType.PK_LEGGINGS));
+        customItemManager.add(new CustomItem(CustomItemType.PK_BOOTS));
     }
 
     private void registerCommands() {
         this.getCommand("setteam").setExecutor(new SetTeamCommand());
+        this.getCommand("damage").setExecutor(new DamageCommand());
     }
 
     private void registerEvents() {
@@ -125,5 +138,9 @@ public class Main extends JavaPlugin {
 
     public CustomItemManager getCustomItemManager() {
         return customItemManager;
+    }
+
+    public CustomConfig getCustomItemConfig() {
+        return customItemConfig;
     }
 }

@@ -1,0 +1,41 @@
+sword:
+    material: "DIAMOND_SWORD"
+    name: "§6§lPlayer Killer"
+    lore:
+        - "§fBy using this item on a player,"
+        - "§fyou can lock them half a heart"
+
+shield:
+    material: "SHIELD"
+    name: "§6§lPlayer Killer Shield"
+    lore:
+        - "§fBy having this item equipped,"
+        - "§fyou can avoid loosing half a heart"
+
+helmet:
+    material: "DIAMOND_HELMET"
+    name: "§6§lPlayer Killer Helmet"
+    lore:
+        - "§fBy having this item equipped,"
+        - "§fyou can avoid loosing half a heart"
+
+chestplate:
+    material: "DIAMOND_CHESTPLATE"
+    name: "§6§lPlayer Killer Chestplate"
+    lore:
+        - "§fBy having this item equipped,"
+        - "§fyou can avoid loosing half a heart"
+
+leggings:
+    material: "DIAMOND_LEGGINGS"
+    name: "§6§lPlayer Killer Leggings"
+    lore:
+        - "§fBy having this item equipped,"
+        - "§fyou can avoid loosing half a heart"
+
+boots:
+    material: "DIAMOND_BOOTS"
+    name: "§6§lPlayer Killer Boots"
+    lore:
+        - "§fBy having this item equipped,"
+        - "§fyou can avoid loosing half a heart"

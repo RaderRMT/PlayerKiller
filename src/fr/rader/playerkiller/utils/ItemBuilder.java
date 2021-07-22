@@ -9,6 +9,7 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class ItemBuilder {
     private ItemStack is;
@@ -83,6 +84,10 @@ public class ItemBuilder {
         im.setLore(Arrays.asList(lore));
         this.is.setItemMeta(im);
         return this;
+    }
+
+    public ItemBuilder setLore(List<String> lore) {
+        return setLore(lore.toArray(new String[0]));
     }
 
     public ItemBuilder setLeatherArmorColor(Color color) {
